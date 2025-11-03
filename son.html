@@ -36,87 +36,118 @@
   <script>
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
-    let particles = [];
-    let rockets = [];
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
+    window.addEventListener("resize", () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    });
 
-    function createRocket() {
-      const x = Math.random() * canvas.width;
-      const y = canvas.height;
-      const color = ["#ff66b2", "#ff4d4d", "#ffcc00", "#00ff99", "#66ccff"][Math.floor(Math.random() * 5)];
-      rockets.push({ x, y, vy: -7 - Math.random() * 3, color, exploded: false });
-    }
+    const rockets = [];
+    const particles = [];
 
-    function explode(x, y, color) {
-      for (let i = 0; i < 80; i++) {
-        const angle = Math.random() * 2 * Math.PI;
-        const speed = Math.random() * 5 + 2;
-        particles.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          alpha: 1,
-          color,
-          emoji: "💖"
-        });
+    class Rocket {
+      constructor(x) {
+        this.x = x;
+        this.y = height;
+        this.vx = (Math.random() - 0.5) * 1.5;
+        this.vy = - (7 + Math.random() * 3);
+        this.color = ["#ff66b2", "#ff4d4d", "#ffd700", "#00ff99", "#66ccff"][Math.floor(Math.random() * 5)];
+        this.exploded = false;
+        this.targetY = height / 2 - Math.random() * (height / 3);
+        this.trail = [];
       }
-    }
 
-    function update() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      update() {
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > 8) this.trail.shift();
 
-      // Roketler
-      for (let i = rockets.length - 1; i >= 0; i--) {
-        const r = rockets[i];
-        r.y += r.vy;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.05;
+
+        // çiz
         ctx.beginPath();
-        ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = r.color;
+        ctx.moveTo(this.x, this.y);
+        for (let i = this.trail.length - 1; i >= 0; i--) {
+          const t = this.trail[i];
+          ctx.lineTo(t.x, t.y);
+        }
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
         ctx.fill();
 
-        if (r.vy > -1 && !r.exploded) {
-          explode(r.x, r.y, r.color);
-          rockets.splice(i, 1);
-        } else {
-          r.vy += 0.15;
+        if (this.vy >= 0 || this.y <= this.targetY) {
+          this.explode();
         }
       }
 
-      // Parçacıklar (kalpler)
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.05;
-        p.alpha -= 0.015;
-
-        ctx.save();
-        ctx.globalAlpha = p.alpha;
-        ctx.font = "20px Arial";
-        ctx.fillText(p.emoji, p.x, p.y);
-        ctx.restore();
-
-        if (p.alpha <= 0) particles.splice(i, 1);
+      explode() {
+        this.exploded = true;
+        for (let i = 0; i < 70; i++) {
+          const angle = Math.random() * 2 * Math.PI;
+          const speed = Math.random() * 5 + 2;
+          particles.push(new Particle(this.x, this.y, speed, angle, this.color));
+        }
       }
-
-      requestAnimationFrame(update);
     }
 
-    // Her saniyede 3 roket fırlat
+    class Particle {
+      constructor(x, y, speed, angle, color) {
+        this.x = x;
+        this.y = y;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.alpha = 1;
+        this.color = color;
+        this.emoji = "💖";
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.05;
+        this.alpha -= 0.015;
+        ctx.globalAlpha = this.alpha;
+        ctx.font = "20px Arial";
+        ctx.fillText(this.emoji, this.x, this.y);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function loop() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        rockets[i].update();
+        if (rockets[i].exploded) rockets.splice(i, 1);
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        if (particles[i].alpha <= 0) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
     setInterval(() => {
       for (let i = 0; i < 3; i++) {
-        createRocket();
+        rockets.push(new Rocket(Math.random() * width));
       }
     }, 1000);
 
-    update();
+    loop();
   </script>
 </body>
 </html>
