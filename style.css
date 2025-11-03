@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
   --accent: #ff69b4;
   --accent-dark: #ff1493;
 }
 
-/* 🌅 Fade-in animasyonu ve genel yapı */
+/* Genel fade-in animasyonu */
 html, body {
   height: 100%;
   margin: 0;
@@ -18,7 +19,7 @@ html, body {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Varsayılan arka plan (index.html) */
+/* Varsayılan arka plan (index) */
 body {
   background-image: url('assets/mc-bg.jpg');
   background-size: cover;
@@ -29,35 +30,53 @@ body {
   justify-content: center;
 }
 
-/* Özel arka planlar */
-body.soru2 {
-  background-image: url('assets/mc-bg2.jpg');
+/* Diğer arka planlar */
+body.soru2 { background-image: url('assets/mc-bg2.jpg'); }
+body.soru3 { background-image: url('assets/mc-bg3.jpg'); }
+body.son   { background-image: url('assets/mc-bg4.jpeg'); }
+
+/* Görseller (sol üst – sağ alt) */
+.top-left-img {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 130px;
+  height: auto;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  z-index: 10;
 }
-body.soru3 {
-  background-image: url('assets/mc-bg3.jpg');
-}
-body.son {
-  background-image: url('assets/mc-bg4.jpeg');
+.bottom-right-img {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 130px;
+  height: auto;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  z-index: 10;
 }
 
-/* Koyu overlay katmanı */
+/* Saydam overlay */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0,0,0,0.35);
   pointer-events: none;
 }
 
-/* Ana içerik kutusu */
+/* Ana kutu */
 .container {
   position: relative;
   z-index: 2;
   width: min(92%, 720px);
   text-align: center;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255,255,255,0.82);
   border-radius: 24px;
   padding: 34px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
   backdrop-filter: blur(6px);
 }
 
@@ -73,47 +92,40 @@ h1 {
   margin-bottom: 18px;
 }
 
-/* Butonlar */
-.buttons {
-  margin-top: 18px;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
+/* 🎮 Minecraft tarzı butonlar */
 button {
-  padding: 12px 28px;
-  font-size: 17px;
-  border-radius: 30px;
-  border: none;
+  padding: 14px 30px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 2px solid #000;
   cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  position: relative;
-  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-family: 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
+/* 💚 Evet (Creeper tarzı) */
 .yes {
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: white;
-  font-weight: 600;
+  background: linear-gradient(180deg, #00b000 0%, #008000 100%);
+  color: #fff;
+  box-shadow: 0 4px 0 #004d00;
 }
+
+/* ❤️ Hayır (TNT tarzı) */
 .no {
-  background: rgba(255, 255, 255, 0.9);
-  color: #444;
+  background: linear-gradient(180deg, #ff4d4d 0%, #cc0000 100%);
+  color: #fff;
+  box-shadow: 0 4px 0 #660000;
 }
 
-/* Hover ve tıklama efektleri */
-.yes:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 14px 30px rgba(255, 105, 180, 0.18);
-}
-.no:hover {
-  transform: translateY(-2px);
+/* Hover efekti */
+button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.25);
 }
 
-/* 💖 Evet butonuna kalp patlaması */
+/* Kalp patlaması */
 button.yes::after {
   content: "💖💞💘";
   position: absolute;
@@ -126,21 +138,20 @@ button.yes::after {
 button.yes:active::after {
   transform: translate(-50%, -50%) scale(1.8);
   opacity: 1;
-  transition: all 0.3s ease;
 }
 
-/* 💔 Hayır butonu titreme */
+/* Hayır butonu titreme */
 button.no:active {
   animation: shake 0.3s ease;
 }
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
+  0%,100% { transform: translateX(0); }
   25% { transform: translateX(-4px); }
   50% { transform: translateX(4px); }
   75% { transform: translateX(-3px); }
 }
 
-/* Son sayfadaki kalpler animasyonu */
+/* Final sayfa animasyonu */
 .final .container {
   animation: floaty 6s ease-in-out infinite;
 }
@@ -153,11 +164,11 @@ button.no:active {
 .hearts {
   font-size: 36px;
   margin-top: 18px;
-  filter: drop-shadow(0 6px 12px rgba(255, 105, 180, 0.25));
+  filter: drop-shadow(0 6px 12px rgba(255,105,180,0.25));
 }
 
-/* Mobil görünüm */
+/* Mobil uyum */
 @media (max-width: 480px) {
-  h1 { font-size: 20px; }
-  button { width: 46%; padding: 12px 12px; font-size: 15px; }
+  h1 { font-size: 18px; }
+  button { width: 46%; font-size: 10px; padding: 10px; }
 }
