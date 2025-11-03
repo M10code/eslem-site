@@ -1,142 +1,64 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aşıklar Adası 💞</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <style>
-    canvas {
+    body {
+      overflow: hidden;
+    }
+    .heart {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: -10px;
+      font-size: 24px;
+      color: pink;
+      animation: fall linear forwards;
       pointer-events: none;
       z-index: 5;
     }
-    .container {
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-    .container.visible {
-      opacity: 1;
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body class="son final">
-  <canvas id="fireworks"></canvas>
-
-  <img src="assets/el-y-yo.png" alt="Çift" class="top-left-img" />
-  <img src="assets/minecraft-wolf.png" alt="Köpek" class="bottom-right-img" />
+  <img src="assets/el-y-yo.png" alt="Çift" class="top-left-img">
+  <img src="assets/minecraft-wolf.png" alt="Köpek" class="bottom-right-img">
 
   <div class="overlay"></div>
-  <div class="container" id="finalText">
+  <div class="container">
     <h1>Yaaa! Çok sevindim 😍💘</h1>
     <p class="subtitle">Artık resmen sevgiliyiz 💞</p>
     <div class="hearts">💖💖💖💖💖</div>
     <audio autoplay loop>
-      <source src="assets/muzik.mp3" type="audio/mpeg" />
+      <source src="assets/muzik.mp3" type="audio/mpeg">
     </audio>
   </div>
 
   <script>
-    const canvas = document.getElementById("fireworks");
-    const ctx = canvas.getContext("2d");
-    let W = window.innerWidth;
-    let H = window.innerHeight;
-    canvas.width = W;
-    canvas.height = H;
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = 16 + Math.random() * 24 + "px";
+      heart.style.animationDuration = 3 + Math.random() * 3 + "s";
+      document.body.appendChild(heart);
 
-    const particles = [];
-    let exploded = false;
-
-    class Particle {
-      constructor(x, y, speed, angle) {
-        this.x = x;
-        this.y = y;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        this.alpha = 1;
-        this.size = 22 + Math.random() * 6;
-        this.gravity = 0.07 + Math.random() * 0.03;
-        this.emoji = "💖";
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vy += this.gravity;
-        this.alpha -= 0.018;
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.font = `${this.size}px Arial`;
-        ctx.fillText(this.emoji, this.x, this.y);
-        ctx.restore();
-      }
+      setTimeout(() => heart.remove(), 6000);
     }
 
-    // 🚀 Tek roket
-    let rocket = { x: W / 2, y: H, vy: -5, exploded: false };
-
-    function animate() {
-      ctx.fillStyle = "rgba(0,0,0,0.3)";
-      ctx.fillRect(0, 0, W, H);
-
-      // Roket hareketi
-      if (!rocket.exploded) {
-        rocket.y += rocket.vy;
-        rocket.vy += 0.04;
-
-        ctx.beginPath();
-        ctx.arc(rocket.x, rocket.y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = "#ff66b2";
-        ctx.fill();
-
-        if (rocket.vy >= -0.5 || rocket.y < H / 2) {
-          rocket.exploded = true;
-          explode(rocket.x, rocket.y);
-        }
-      }
-
-      // Kalpler
-      for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        if (particles[i].alpha <= 0 || particles[i].y > H + 50) {
-          particles.splice(i, 1);
-        }
-      }
-
-      if (!exploded || particles.length > 0) requestAnimationFrame(animate);
-    }
-
-    function explode(x, y) {
-      exploded = true;
-
-      // flaş
-      ctx.save();
-      const flash = ctx.createRadialGradient(x, y, 0, x, y, 100);
-      flash.addColorStop(0, "rgba(255,255,255,0.9)");
-      flash.addColorStop(1, "rgba(255,192,203,0)");
-      ctx.fillStyle = flash;
-      ctx.beginPath();
-      ctx.arc(x, y, 100, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      // kalpler
-      for (let i = 0; i < 80; i++) {
-        const angle = Math.random() * 2 * Math.PI;
-        const speed = Math.random() * 3 + 1.5;
-        particles.push(new Particle(x, y, speed, angle));
-      }
-
-      // 2.5 saniye sonra yazı belirsin
-      setTimeout(() => {
-        document.getElementById("finalText").classList.add("visible");
-      }, 2500);
-    }
-
-    animate();
+    // Her 200ms'de bir kalp oluştur
+    setInterval(createHeart, 200);
   </script>
 </body>
 </html>
