@@ -50,42 +50,32 @@
 
     const rockets = [];
     const particles = [];
-
-    window.addEventListener("resize", () => {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width = W;
-      canvas.height = H;
-    });
+    let animating = true; // 🔹 kontrol değişkeni
 
     class Rocket {
       constructor(x) {
         this.x = x;
         this.y = H;
-        this.vx = (Math.random() - 0.5) * 0.8;
-        this.vy = - (4 + Math.random() * 1.5);
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = - (4 + Math.random() * 1.2);
         this.color = "#ff66b2";
         this.exploded = false;
-        this.targetY = H * (0.35 + Math.random() * 0.2);
+        this.targetY = H * (0.35 + Math.random() * 0.25);
         this.trail = [];
       }
 
       update() {
         this.trail.push({ x: this.x, y: this.y });
-        if (this.trail.length > 12) this.trail.shift();
+        if (this.trail.length > 10) this.trail.shift();
 
         this.x += this.vx;
         this.y += this.vy;
         this.vy += 0.04;
 
-        // duman izi
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
-        for (let i = this.trail.length - 1; i >= 0; i--) {
-          const t = this.trail[i];
-          ctx.lineTo(t.x, t.y);
-        }
-        ctx.strokeStyle = "rgba(255,182,193,0.4)";
+        for (let t of this.trail) ctx.lineTo(t.x, t.y);
+        ctx.strokeStyle = "rgba(255,182,193,0.5)";
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -94,45 +84,40 @@
         ctx.fillStyle = this.color;
         ctx.fill();
 
-        if (this.vy >= 0 || this.y <= this.targetY) {
-          this.explode();
-        }
+        if (this.vy >= 0 || this.y <= this.targetY) this.explode();
       }
 
       explode() {
         this.exploded = true;
-
-        // flaş
+        // Flaş efekti
         ctx.save();
-        const flashGrad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 100);
-        flashGrad.addColorStop(0, "rgba(255,255,255,0.8)");
-        flashGrad.addColorStop(1, "rgba(255,192,203,0)");
-        ctx.fillStyle = flashGrad;
+        const flash = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 80);
+        flash.addColorStop(0, "rgba(255,255,255,0.9)");
+        flash.addColorStop(1, "rgba(255,192,203,0)");
+        ctx.fillStyle = flash;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 100, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, 80, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        // kalpler
-        for (let i = 0; i < 80; i++) {
+        // Kalpler
+        for (let i = 0; i < 70; i++) {
           const angle = Math.random() * 2 * Math.PI;
-          const speed = Math.random() * 4 + 1;
-          particles.push(new Particle(this.x, this.y, speed, angle, "#ff77cc"));
+          const speed = Math.random() * 3 + 1;
+          particles.push(new Particle(this.x, this.y, speed, angle));
         }
       }
     }
 
     class Particle {
-      constructor(x, y, speed, angle, color) {
+      constructor(x, y, speed, angle) {
         this.x = x;
         this.y = y;
         this.vx = Math.cos(angle) * speed;
         this.vy = Math.sin(angle) * speed;
         this.alpha = 1;
-        this.color = color;
         this.emoji = "💖";
       }
-
       update() {
         this.x += this.vx;
         this.y += this.vy;
@@ -147,36 +132,37 @@
     }
 
     function animate() {
-      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.fillStyle = "rgba(0,0,0,0.25)";
       ctx.fillRect(0, 0, W, H);
 
-      for (let i = rockets.length - 1; i >= 0; i--) {
-        rockets[i].update();
-        if (rockets[i].exploded) rockets.splice(i, 1);
-      }
+      rockets.forEach((r, i) => {
+        r.update();
+        if (r.exploded) rockets.splice(i, 1);
+      });
 
-      for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        if (particles[i].alpha <= 0) particles.splice(i, 1);
-      }
+      particles.forEach((p, i) => {
+        p.update();
+        if (p.alpha <= 0) particles.splice(i, 1);
+      });
 
-      if (rockets.length > 0 || particles.length > 0) {
+      // 🔹 Eğer hiçbir roket ve partikül kalmadıysa döngüyü durdur
+      if (animating && (rockets.length > 0 || particles.length > 0)) {
         requestAnimationFrame(animate);
       }
     }
 
-    // 5 roketi başlat
+    // 🔹 5 roket başlat (tek seferlik)
     for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        rockets.push(new Rocket(W * (0.2 + Math.random() * 0.6)));
-      }, i * 500); // her 0.5 saniyede biri başlasın
+      setTimeout(() => rockets.push(new Rocket(W * (0.2 + Math.random() * 0.6))), i * 400);
     }
 
+    // 🔹 animasyon başlat
     animate();
 
-    // 4 saniye sonra yazı gelsin
+    // 🔹 4 saniye sonra yazı belirsin ve animasyon durdurulsun
     setTimeout(() => {
       document.getElementById("finalText").classList.add("visible");
+      animating = false;
     }, 4000);
   </script>
 </body>
