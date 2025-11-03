@@ -1,64 +1,8 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aşığım Sana Eslem'im 💞</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      overflow: hidden;
-    }
-    .heart {
-      position: fixed;
-      top: -10px;
-      font-size: 24px;
-      color: pink;
-      animation: fall linear forwards;
-      pointer-events: none;
-      z-index: 5;
-    }
-    @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-  </style>
-</head>
-<body class="son final">
-  <img src="assets/el-y-yo.png" alt="Çift" class="top-left-img">
-  <img src="assets/minecraft-wolf.png" alt="Köpek" class="bottom-right-img">
-
-  <div class="overlay"></div>
+<div class="overlay"></div>
   <div class="container">
-    <h1>Yaaa! Sana Söz Veriyorum Ölümüne Seni Çooooook Mutlu Edicem Eslem'im 😍💘</h1>
-    <p class="subtitle">Sonsuza Dek MUSA💞ESLEM</p>
-    <div class="hearts">💖💖💖💖💖</div>
-    <audio autoplay loop>
-      <source src="assets/muzik.mp3" type="audio/mpeg">
-    </audio>
-  </div>
+    <h1>Gerçekten emin misin? 😳 Çünkü ben hayatımın her anında seni istiyorum 💘</h1>
+    <h1>Hayatım'ın Bir Parçası Olmanı İstiyorum 😳 Çünkü ben hayatımın her anında seni istiyorum 💘</h1>
+    <div class="buttons">
+      <button class="yes" onclick="window.location.href='soru3.html'">Evet 💚</button>
+      <button class="no">Hayır 💔</button>
 
-  <script>
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.textContent = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = 16 + Math.random() * 24 + "px";
-      heart.style.animationDuration = 3 + Math.random() * 3 + "s";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000);
-    }
-
-    // Her 200ms'de bir kalp oluştur
-    setInterval(createHeart, 200);
-  </script>
-</body>
-</html>
