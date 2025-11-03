@@ -6,20 +6,19 @@
   --glass: rgba(255,255,255,0.75);
 }
 
+/* Genel yapı */
 html,body{
   height:100%;
   margin:0;
   font-family:'Poppins',sans-serif;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
 }
 
+/* Minecraft sunset arka plan */
 body{
   background-image: url('assets/mc-bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: saturate(1.05);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -28,49 +27,35 @@ body{
 .overlay{
   position:fixed;
   inset:0;
-  background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25));
-  mix-blend-mode: multiply;
+  background: rgba(0,0,0,0.35);
   pointer-events:none;
 }
 
 .container{
   position:relative;
   z-index:2;
-  width: min(92%, 720px);
-  margin: 24px;
+  width:min(92%,720px);
   text-align:center;
   background: rgba(255,255,255,0.82);
   border-radius:24px;
   padding:34px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(6px) saturate(1.1);
-  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
 }
 
-.bunny{
-  width:90px;
-  height:auto;
-  display:block;
-  margin: -70px auto 8px;
-  transform: translateY(-24px);
-  border-radius:16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-}
-
+/* Metinler */
 h1{
-  margin: 6px 0 6px;
   color: var(--accent-dark);
   font-size: 26px;
   line-height:1.2;
-  letter-spacing:0.2px;
 }
-
 .subtitle{
   color:#6b6b6b;
   margin-top:4px;
   margin-bottom:18px;
 }
 
+/* Butonlar */
 .buttons{ margin-top:18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
 
 button{
@@ -83,18 +68,18 @@ button{
   box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
-button.yes{
+.yes{
   background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
   color:white;
   font-weight:600;
 }
-button.no{
+.no{
   background: rgba(255,255,255,0.9);
   color:#444;
 }
 
-button.yes:hover{ transform: translateY(-4px) scale(1.03); box-shadow: 0 14px 30px rgba(255,105,180,0.18); }
-button.no:hover{ transform: translateY(-2px); }
+.yes:hover{ transform: translateY(-4px) scale(1.03); box-shadow: 0 14px 30px rgba(255,105,180,0.18); }
+.no:hover{ transform: translateY(-2px); }
 
 .final .container{
   animation: floaty 6s ease-in-out infinite;
@@ -105,10 +90,13 @@ button.no:hover{ transform: translateY(-2px); }
   100%{ transform: translateY(0); }
 }
 
-.hearts{ font-size:36px; margin-top:18px; filter: drop-shadow(0 6px 12px rgba(255,105,180,0.25)); }
+.hearts{
+  font-size:36px;
+  margin-top:18px;
+  filter: drop-shadow(0 6px 12px rgba(255,105,180,0.25));
+}
 
 @media (max-width:480px){
   h1{ font-size:20px; }
-  .bunny{ width:72px; margin-top:-50px; }
-  button{ width: 46%; padding:12px 12px; font-size:15px; }
+  button{ width:46%; padding:12px 12px; font-size:15px; }
 }
