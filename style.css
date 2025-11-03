@@ -1,102 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-
-:root{
-  --accent:#ff69b4;
-  --accent-dark:#ff1493;
-  --glass: rgba(255,255,255,0.75);
+/* Sayfa geçişlerinde yumuşak fade-in efekti */
+body {
+  opacity: 0;
+  animation: fadeIn 1.4s ease forwards;
 }
 
-/* Genel yapı */
-html,body{
-  height:100%;
-  margin:0;
-  font-family:'Poppins',sans-serif;
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* Minecraft sunset arka plan */
-body{
-  background-image: url('assets/mc-bg.jpg');
+/* 🌙 SORU 2 - özel arka plan */
+body.soru2 {
+  background-image: url('assets/mc-bg2.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
-.overlay{
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.35);
-  pointer-events:none;
+/* 🐝 SORU 3 - özel arka plan */
+body.soru3 {
+  background-image: url('assets/mc-bg3.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
-.container{
-  position:relative;
-  z-index:2;
-  width:min(92%,720px);
-  text-align:center;
-  background: rgba(255,255,255,0.82);
-  border-radius:24px;
-  padding:34px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(6px);
+/* 🌸 SON SAYFA - özel arka plan */
+body.son {
+  background-image: url('assets/mc-bg4.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+/* 💘 Evet butonuna tıklayınca kalp patlaması efekti */
+button.yes {
+  position: relative;
+  overflow: hidden;
 }
 
-/* Metinler */
-h1{
-  color: var(--accent-dark);
-  font-size: 26px;
-  line-height:1.2;
-}
-.subtitle{
-  color:#6b6b6b;
-  margin-top:4px;
-  margin-bottom:18px;
+button.yes::after {
+  content: "💖💞💘";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: all 0.4s ease;
 }
 
-/* Butonlar */
-.buttons{ margin-top:18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-
-button{
-  padding:12px 28px;
-  font-size:17px;
-  border-radius:30px;
-  border:none;
-  cursor:pointer;
-  transition: transform .18s ease, box-shadow .18s ease;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-.yes{
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color:white;
-  font-weight:600;
-}
-.no{
-  background: rgba(255,255,255,0.9);
-  color:#444;
-}
-
-.yes:hover{ transform: translateY(-4px) scale(1.03); box-shadow: 0 14px 30px rgba(255,105,180,0.18); }
-.no:hover{ transform: translateY(-2px); }
-
-.final .container{
-  animation: floaty 6s ease-in-out infinite;
-}
-@keyframes floaty{
-  0%{ transform: translateY(0); }
-  50%{ transform: translateY(-6px); }
-  100%{ transform: translateY(0); }
-}
-
-.hearts{
-  font-size:36px;
-  margin-top:18px;
-  filter: drop-shadow(0 6px 12px rgba(255,105,180,0.25));
-}
-
-@media (max-width:480px){
-  h1{ font-size:20px; }
-  button{ width:46%; padding:12px 12px; font-size:15px; }
+button.yes:active::after {
+  transform: translate(-50%, -50%) scale(1.8);
+  opacity: 1;
+  transition: all 0.3s ease;
 }
