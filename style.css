@@ -3,9 +3,9 @@ body {
   font-family: 'Poppins', sans-serif;
   color: white;
   text-align: center;
-  background: url("assets/mc-bg1.jpg") no-repeat center center;
+  background: #000;
   background-size: cover;
-  background-attachment: scroll; /* mobil için doğru */
+  background-attachment: scroll;
   height: 100vh;
   overflow: hidden;
 }
@@ -16,7 +16,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0,0,0,0.3);
   z-index: 1;
 }
 
@@ -38,9 +38,19 @@ h1 {
   color: #ffe6f2;
 }
 
-.hearts {
-  font-size: 30px;
-  margin-top: 10px;
+button {
+  padding: 12px 25px;
+  background: #ff4da6;
+  border: none;
+  color: white;
+  font-size: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.1);
 }
 
 .top-left-img, .bottom-right-img {

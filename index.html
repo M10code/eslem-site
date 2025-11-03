@@ -1,77 +1,20 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aşıklar Adası 💞</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .heart {
-      position: fixed;
-      top: -10px;
-      font-size: 24px;
-      color: pink;
-      animation: fall linear forwards;
-      pointer-events: none;
-      z-index: 5;
-    }
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-    button {
-      padding: 12px 25px;
-      background: #ff4da6;
-      border: none;
-      color: white;
-      font-size: 18px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 30px;
-      transition: transform 0.2s;
-    }
-    button:hover { transform: scale(1.1); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aşıklar Adası 💞</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="home">
-  <div class="overlay"></div>
-  <div class="container">
-    <h1>Eslem 💖</h1>
-    <p class="subtitle">Belki de Bugünleri Hayal Ediyorduk 💫</p>
-    <button onclick="startExperience()">Başla 💞</button>
-  </div>
-
-  <script>
-    let audio;
-
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.textContent = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = 16 + Math.random() * 24 + "px";
-      heart.style.animationDuration = 3 + Math.random() * 3 + "s";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
-    }
-
-    function startExperience() {
-      // Müzik başlat
-      if (!audio) {
-        audio = new Audio("assets/muzik.mp3");
-        audio.loop = true;
-        audio.play();
-      }
-      // Kalpler başlasın
-      setInterval(createHeart, 200);
-
-      // Yazı değişsin
-      document.querySelector(".container").innerHTML = `
-        <h1>Yaaa! Çok sevindim 😍💘</h1>
-        <p class="subtitle">Artık resmen sevgiliyiz 💞</p>
-        <div class="hearts">💖💖💖💖💖</div>
-      `;
-    }
-  </script>
+<body style="background:url('assets/mc-bg1.jpg') center/cover no-repeat;">
+<div class="overlay"></div>
+<div class="container">
+  <h1>Eslem 💖</h1>
+  <p class="subtitle">Belki de Bugünleri Hayal Ediyorduk 💫</p>
+  <button onclick="window.location.href='soru2.html'">Devam Et 💞</button>
+  <audio autoplay loop>
+    <source src="assets/muzik.mp3" type="audio/mpeg">
+  </audio>
+</div>
 </body>
 </html>
