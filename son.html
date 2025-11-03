@@ -71,7 +71,7 @@
         this.y += this.vy;
         this.vy += 0.03;
 
-        // iz
+        // duman izi
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
         for (let t of this.trail) ctx.lineTo(t.x, t.y);
@@ -104,7 +104,7 @@
         ctx.restore();
 
         // kalpler
-        for (let i = 0; i < 70; i++) {
+        for (let i = 0; i < 80; i++) {
           const angle = Math.random() * 2 * Math.PI;
           const speed = Math.random() * 3 + 1.5;
           particles.push(new Particle(this.x, this.y, speed, angle));
@@ -119,16 +119,18 @@
         this.vx = Math.cos(angle) * speed;
         this.vy = Math.sin(angle) * speed;
         this.alpha = 1;
+        this.size = 22 + Math.random() * 6;
+        this.gravity = 0.07 + Math.random() * 0.03; // 💡 aşağı düşüş efekti
         this.emoji = "💖";
       }
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += 0.05;
+        this.vy += this.gravity; // 💫 yerçekimi etkisi
         this.alpha -= 0.018;
         ctx.save();
         ctx.globalAlpha = this.alpha;
-        ctx.font = "22px Arial";
+        ctx.font = `${this.size}px Arial`;
         ctx.fillText(this.emoji, this.x, this.y);
         ctx.restore();
       }
@@ -145,7 +147,7 @@
 
       for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update();
-        if (particles[i].alpha <= 0) particles.splice(i, 1);
+        if (particles[i].alpha <= 0 || particles[i].y > H + 50) particles.splice(i, 1);
       }
 
       if (rockets.length > 0 || particles.length > 0) {
@@ -157,7 +159,7 @@
     for (let i = 0; i < 5; i++) {
       setTimeout(() => {
         rockets.push(new Rocket(W * (0.2 + Math.random() * 0.6)));
-        if (i === 4) requestAnimationFrame(animate); // sonuncudan sonra animasyonu başlat
+        if (i === 4) requestAnimationFrame(animate);
       }, i * 500);
     }
 
