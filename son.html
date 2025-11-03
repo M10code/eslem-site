@@ -15,6 +15,13 @@
       pointer-events: none;
       z-index: 5;
     }
+    .container {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .container.visible {
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="son final">
@@ -24,7 +31,7 @@
   <img src="assets/minecraft-wolf.png" alt="Köpek" class="bottom-right-img">
 
   <div class="overlay"></div>
-  <div class="container">
+  <div class="container" id="finalText">
     <h1>Yaaa! Çok sevindim 😍💘</h1>
     <p class="subtitle">Artık resmen sevgiliyiz 💞</p>
     <div class="hearts">💖💖💖💖💖</div>
@@ -43,6 +50,7 @@
 
     const rockets = [];
     const particles = [];
+    let animationActive = true;
 
     window.addEventListener("resize", () => {
       W = window.innerWidth;
@@ -56,7 +64,7 @@
         this.x = x;
         this.y = H;
         this.vx = (Math.random() - 0.5) * 1.5;
-        this.vy = - (7 + Math.random() * 3);
+        this.vy = - (5 + Math.random() * 2);
         this.color = "#ff66b2";
         this.exploded = false;
         this.targetY = H / 2 - Math.random() * (H / 3);
@@ -69,7 +77,7 @@
 
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += 0.05;
+        this.vy += 0.04;
 
         // duman izi
         ctx.beginPath();
@@ -78,11 +86,10 @@
           const t = this.trail[i];
           ctx.lineTo(t.x, t.y);
         }
-        ctx.strokeStyle = "rgba(255,182,193,0.5)";
+        ctx.strokeStyle = "rgba(255,182,193,0.4)";
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // roket noktası
         ctx.beginPath();
         ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
@@ -96,14 +103,15 @@
       explode() {
         this.exploded = true;
 
-        // flaş efekti 💥
+        // Flaş
         ctx.save();
-        ctx.fillStyle = "rgba(255,240,245,0.8)";
+        ctx.fillStyle = "rgba(255,240,245,0.9)";
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 80, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, 100, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
+        // Kalpler
         for (let i = 0; i < 80; i++) {
           const angle = Math.random() * 2 * Math.PI;
           const speed = Math.random() * 5 + 1;
@@ -126,7 +134,7 @@
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += 0.04; // yerçekimi
+        this.vy += 0.05;
         this.alpha -= 0.015;
 
         ctx.save();
@@ -151,17 +159,23 @@
         if (particles[i].alpha <= 0) particles.splice(i, 1);
       }
 
-      requestAnimationFrame(animate);
+      if (animationActive || rockets.length > 0 || particles.length > 0) {
+        requestAnimationFrame(animate);
+      }
     }
 
-    // Her saniyede 3 roket fırlat
-    setInterval(() => {
-      for (let i = 0; i < 3; i++) {
-        rockets.push(new Rocket(Math.random() * W));
-      }
-    }, 1000);
+    // İlk anda 4-5 fişek fırlat
+    for (let i = 0; i < 5; i++) {
+      rockets.push(new Rocket(W * (0.2 + Math.random() * 0.6)));
+    }
 
     animate();
+
+    // 4 saniye sonra yazı gelsin
+    setTimeout(() => {
+      document.getElementById("finalText").classList.add("visible");
+      animationActive = false;
+    }, 4000);
   </script>
 </body>
 </html>
